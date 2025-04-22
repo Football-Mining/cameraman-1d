@@ -1,0 +1,27 @@
+{
+    "kalman": {
+      "base": {
+        "variance_position": 10.0,
+        "variance_measurement": 40.0,
+        "process_noise": 0.01
+      },
+      "slider": {
+        "variance_position": 0.05,
+        "variance_measurement": 0.5,
+        "process_noise": 0.01
+      }
+    },
+    "camera": {
+      "memory_length": 0.5,
+      "fps": 30,
+      "speed_max": 150,
+      "buffer_pixels": 30,
+      "position_merge_ratio": 0.6,
+      "speed_slider_gain": 3.0
+    },
+    "safety": {
+      "noise_threshold": 200,
+      "min_players": 3,
+      "boundary_margin": 50
+    }
+  }
