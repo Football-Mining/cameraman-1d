@@ -116,6 +116,17 @@ CameramanModel::CameramanModel(const std::vector<Point>& court_points)
 }
 float CameramanModel::predict(const std::vector<Point>& players, 
                             const std::vector<Point>& balls) {
+    if (ConfigManager::ReloadCourtPointsIfNeeded()) {
+        // 更新边界
+        const auto& court_points = ConfigManager::Get().court_points;
+        if (!court_points.empty()) {
+            auto x_comparator = [](const Point& a, const Point& b) { return a.x < b.x; };
+            auto min_it = std::min_element(court_points.begin(), court_points.end(), x_comparator);
+            auto max_it = std::max_element(court_points.begin(), court_points.end(), x_comparator);
+            left_most_ = min_it->x;
+            right_most_ = max_it->x;
+        }
+    }
     std::cout << "\n==== 开始预测 ====\n";
     std::cout << "输入球员数量: " << players.size() 
               << ", 球数量: " << balls.size() << std::endl;
@@ -180,6 +191,20 @@ float CameramanModel::predict(const std::vector<Point>& players,
     });
 
     return target_x;
+}
+
+std::tuple<float, float> CameramanModel::transfer(float x) const {
+    // 读取参数
+    const auto& t = params_.transfer;
+    // 归一化
+    float norm = (x - t.x_min) / (t.x_max - t.x_min);
+    norm = std::clamp(norm, 0.0f, 1.0f);
+
+    // y: 二次函数，中心最大，两端最小
+    float y = t.y_min + (t.y_max - t.y_min) * (1 - std::pow(2 * norm - 1, 2));
+    // fov: 二次函数，中心最大，两端最小
+    float fov = t.fov_min + (t.fov_max - t.fov_min) * (1 - std::pow(2 * norm - 1, 2));
+    return {y, fov};
 }
 
 // 其他成员函数实现...

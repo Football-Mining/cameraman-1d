@@ -23,5 +23,17 @@
       "noise_threshold": 200,
       "min_players": 3,
       "boundary_margin": 50
+    },
+    "court_config": {
+      "default": "../config/default_court_config.json",
+      "user": "../config/user_court_config.json"
+    },
+    "transfer": {
+      "x_min": 0,
+      "x_max": 1920,
+      "y_min": 0,
+      "y_max": 1080,
+      "fov_min": 0.3,
+      "fov_max": 1.0
     }
   }

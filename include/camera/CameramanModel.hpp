@@ -7,8 +7,6 @@
 #include <optional>
 #include <unordered_map> 
 
-struct Point { float x, y; };
-
 class CameramanModel {
 public:
     explicit CameramanModel(const std::vector<Point>& court_points);
@@ -27,6 +25,7 @@ public:
     };
 
     std::optional<DebugInfo> getDebugInfo() const;
+    std::tuple<float, float> transfer(float x) const;
 
 private:
     void initializeHistory(const std::vector<Point>& positions);
