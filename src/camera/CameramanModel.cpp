@@ -196,14 +196,22 @@ float CameramanModel::predict(const std::vector<Point>& players,
 std::tuple<float, float> CameramanModel::transfer(float x) const {
     // 读取参数
     const auto& t = params_.transfer;
-    // 归一化
+    
+    // 归一化 x 坐标到 [0, 1] 范围
     float norm = (x - t.x_min) / (t.x_max - t.x_min);
     norm = std::clamp(norm, 0.0f, 1.0f);
 
-    // y: 二次函数，中心最大，两端最小
-    float y = t.y_min + (t.y_max - t.y_min) * (1 - std::pow(2 * norm - 1, 2));
-    // fov: 二次函数，中心最大，两端最小
-    float fov = t.fov_min + (t.fov_max - t.fov_min) * (1 - std::pow(2 * norm - 1, 2));
+    // 基于篮球场特性的映射函数
+    // Y轴：中间位置需要更低（因为全景图畸变），两端稍高
+    // 使用反向二次函数：中心最小，两端较大
+    float y_factor = 0.8f + 0.2f * std::pow(2 * norm - 1, 2);  // 中心0.8，两端1.0
+    float y = t.y_min + (t.y_max - t.y_min) * y_factor;
+    
+    // FOV：根据实际需求，中间区域视角稍大，两端稍小
+    // 使用轻微的反向二次函数
+    float fov_factor = 1.0f - 0.15f * std::pow(2 * norm - 1, 2);  // 中心1.0，两端0.85
+    float fov = t.fov_min + (t.fov_max - t.fov_min) * fov_factor;
+    
     return {y, fov};
 }
 
