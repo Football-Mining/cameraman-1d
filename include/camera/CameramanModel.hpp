@@ -32,7 +32,7 @@ private:
     float calculateAccumulatedSpeed(const std::deque<float>& positions) const;
     void handleEmptyInput(std::vector<Point>& players, std::vector<Point>& balls) const;
 
-    std::deque<float> player_pos_memory_;
+    std::deque<float> player_pos_memory_ = {0.f};
     std::deque<float> player_max_memory_;
     std::deque<float> player_min_memory_;
     std::deque<float> ball_pos_memory_;
