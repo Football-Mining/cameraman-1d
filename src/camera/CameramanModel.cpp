@@ -127,16 +127,16 @@ float CameramanModel::predict(const std::vector<Point>& players,
             right_most_ = max_it->x;
         }
     }
-    std::cout << "\n==== 开始预测 ====\n";
-    std::cout << "输入球员数量: " << players.size() 
-              << ", 球数量: " << balls.size() << std::endl;
+    // std::cout << "\n==== 开始预测 ====\n";
+    // std::cout << "输入球员数量: " << players.size() 
+    //           << ", 球数量: " << balls.size() << std::endl;
 
     auto processed_players = players;
     auto processed_balls = balls;
     handleEmptyInput(processed_players, processed_balls);
 
-    std::cout << "处理后球员数量: " << processed_players.size()
-              << ", 球数量: " << processed_balls.size() << std::endl;
+    // std::cout << "处理后球员数量: " << processed_players.size()
+    //           << ", 球数量: " << processed_balls.size() << std::endl;
 
     if (!initialized_) {
         std::cout << "首次运行，初始化历史数据...\n";
